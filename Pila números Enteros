@@ -1,0 +1,70 @@
+import java.util.Scanner;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Ingresa el tamaño inicial de la pila:");
+        int tam = validarEntrada(sc);  // Validar que sea un entero positivo
+        int[] pila = new int[tam];
+        int top = -1;
+
+        // Llenar la pila inicialmente
+        for (int i = 0; i < tam; i++) {
+            System.out.println("Ingresa el valor:");
+            pila[++top] = validarEntrada(sc);  // Validar que sea un entero positivo
+        }
+
+        int opcion;
+        do {
+            System.out.println("\n1. Agregar más números\n2. Mostrar la pila\n3. Salir\nElige una opción:");
+            opcion = validarEntrada(sc);
+
+            switch (opcion) {
+                case 1:
+                    if (top == tam - 1) {
+                        System.out.println("La pila está llena. ¿Cuántos espacios agregar?");
+                        int tamExtra = validarEntrada(sc);
+                        int[] nuevaPila = new int[tam + tamExtra];
+                        System.arraycopy(pila, 0, nuevaPila, 0, tam);  // Copiar elementos
+                        pila = nuevaPila;
+                        tam += tamExtra;
+                    }
+                    System.out.println("Ingresa un valor:");
+                    pila[++top] = validarEntrada(sc);
+                    break;
+
+                case 2:
+                    System.out.println("Valores en la pila:");
+                    for (int i = top; i >= 0; i--) {
+                        System.out.println(pila[i]);
+                    }
+                    break;
+
+                case 3:
+                    System.out.println("Saliendo...");
+                    break;
+
+                default:
+                    System.out.println("Opción no válida.");
+            }
+
+        } while (opcion != 3);
+
+        sc.close();
+    }
+
+    // Método de validación para asegurar que el valor sea un entero positivo
+    public static int validarEntrada(Scanner sc) {
+        while (!sc.hasNextInt()) {
+            System.out.println("Entrada no válida. Ingresa solo enteros positivos:");
+            sc.next();  // Descartar entrada no válida
+        }
+        int valor = sc.nextInt();
+        if (valor < 0) {
+            System.out.println("Número negativo no permitido. Ingresa nuevamente:");
+            return validarEntrada(sc);
+        }
+        return valor;
+    }
+}
